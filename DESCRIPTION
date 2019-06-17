@@ -1,0 +1,30 @@
+Package: ggstudent
+Type: Package
+Date: 2019-02-017
+Title: Continuous confidence interval plots using t-distribution
+Version: 0.1.0
+Authors@R: 
+    person(given = "Jouni",
+           family = "Helske",
+           role = c("aut", "cre"),
+           email = "jouni.helske@iki.fi",
+           comment = c(ORCID = "0000-0001-7130-793X"))
+License: GPL (>= 2)
+Description: Provides an extension to ggplot2 
+    (Wickham, 2016, <doi:10.1007/978-3-319-24277-4>) for creating two 
+    types of continuous confidence interval plots, typically for sample mean.
+    The plots contains multiple user-defined confidence areas with varying colors, 
+    defined by the underlying t-distribution used to compute standard confidence intervals for mean of normal distribution when variance is unknown.
+    Two types of plots are available, a gradient plot with rectangular areas, and violin plot where the 
+    shape (horizontal width) is defined by the probability density function of the t-distribution.
+Encoding: UTF-8
+Depends:
+    R (>= 3.1.0)
+Imports:
+    dplyr,
+    ggplot2,
+    grid,
+    magrittr,
+    scales,
+    stats
+RoxygenNote: 6.1.1
