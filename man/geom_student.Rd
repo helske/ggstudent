@@ -5,9 +5,8 @@
 \title{Student plot}
 \usage{
 geom_student(mapping = NULL, data = NULL, position = "identity",
-  width = 0.25, type = "density", scale = "area",
-  draw_lines = NULL, draw_mean = TRUE, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE, ...)
+  width = 0.25, type = "density", scale = TRUE, draw_lines = NULL,
+  draw_mean = TRUE, show.legend = NA, inherit.aes = TRUE, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}} or
@@ -26,11 +25,20 @@ data. All objects will be fortified to produce a data frame. See
 \code{\link[=fortify]{fortify()}} for which variables will be created.
 
 A \code{function} will be called with a single argument,
-the plot data. The return value must be a \code{data.frame.}, and
-will be used as the layer data.}
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
+
+\item{width}{Scaling parameter for the width of the violin/rectangle.}
+
+\item{type}{Type of the plot. The default is \code{density} which draws violin style density plot,
+whereas \code{"box"} draws a rectangle shaped gradient plot.}
+
+\item{scale}{If \code{"TRUE"} (default), violins/rectangles are scaled according
+to the maximum width of the groups (\code{max(dt(0, df) / se)}).}
 
 \item{draw_lines}{If not \code{NULL} (default), draw horizontal lines
 at the given quantiles of the density estimate.}
@@ -47,6 +55,8 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
+
+\item{...}{Other arguments passed to \code{layer()}, such as fixed aesthetics.}
 }
 \description{
 A Student plot is a mirrored density plot similar to violin plot
@@ -55,7 +65,6 @@ It can be though of as a continuous "confidence interval density", which
 could reduce the dichotomous interpretations due to a fixed confidence level.
 }
 \examples{
-library("magrittr")
 library("dplyr")
 library("ggplot2")
 library("scales")
@@ -80,4 +89,14 @@ p
 g <- scales::seq_gradient_pal("#e5f5f9", "#2ca25f")
 p + scale_fill_manual(values=g(seq(0,1,length = n))) + theme_bw()
 
+p2 <- ggplot(data = d, aes(group)) +
+ geom_student(aes(mean = mean, se = se, df = df,
+   level = level, fill = level), type = "box", draw_lines = c(0.95, 0.5))
+p2
+
+}
+\references{
+Helske, J, S Helske, M Cooper, A Ynnerman, and L Besançon (2020).
+Are You Sure You’re Sure? - Effects of Visual Representation on the Cliff Effect in Statistical Inference.
+Under review. https://arxiv.org/abs/2002.07671
 }

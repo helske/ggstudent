@@ -4,6 +4,7 @@
 #' StatStudent
 #'
 #' @keywords internal
+#' @importFrom stats dt
 #' @usage NULL
 #' @export
 StatStudent <- ggplot2::ggproto(
@@ -13,10 +14,9 @@ StatStudent <- ggplot2::ggproto(
 
   setup_params = function(data, params) {
 
-    params$scale <- match.arg(params$scale, c("area", "width"))
     params$type <- match.arg(params$type, c("density", "box"))
 
-    if (params$scale == "area"){
+    if (params$scale){
       params$maxwidth <- max(dt(0, data$df) / data$se)
     } else {
       params$maxwidth <- 1
@@ -183,21 +183,28 @@ GeomStudent <- ggplot2::ggproto(
   }
 )
 
-
 #' Student plot
 #'
 #' A Student plot is a mirrored density plot similar to violin plot
 #' but instead of kernel density estimate it is based on the $t$-density.
 #' It can be though of as a continuous "confidence interval density", which
 #' could reduce the dichotomous interpretations due to a fixed confidence level.
-#'
+#' @import dplyr
 #' @inheritParams ggplot2::layer
 #' @param draw_lines If not \code{NULL} (default), draw horizontal lines
 #'   at the given quantiles of the density estimate.
 #' @param draw_mean If \code{TRUE} (default), draw horizontal line at mean.
+#' @param type Type of the plot. The default is \code{density} which draws violin style density plot,
+#' whereas \code{"box"} draws a rectangle shaped gradient plot.
+#' @param width Scaling parameter for the width of the violin/rectangle.
+#' @param scale If \code{"TRUE"} (default), violins/rectangles are scaled according
+#' to the maximum width of the groups (\code{max(dt(0, df) / se)}).
+#' @param ... Other arguments passed to \code{layer()}, such as fixed aesthetics.
+#' @references Helske, J, S Helske, M Cooper, A Ynnerman, and L Besançon (2020).
+#' Are You Sure You’re Sure? - Effects of Visual Representation on the Cliff Effect in Statistical Inference.
+#' Under review. https://arxiv.org/abs/2002.07671
 #' @export
 #' @examples
-#' library("magrittr")
 #' library("dplyr")
 #' library("ggplot2")
 #' library("scales")
@@ -222,16 +229,21 @@ GeomStudent <- ggplot2::ggproto(
 #' g <- scales::seq_gradient_pal("#e5f5f9", "#2ca25f")
 #' p + scale_fill_manual(values=g(seq(0,1,length = n))) + theme_bw()
 #'
+#' p2 <- ggplot(data = d, aes(group)) +
+#'  geom_student(aes(mean = mean, se = se, df = df,
+#'    level = level, fill = level), type = "box", draw_lines = c(0.95, 0.5))
+#' p2
+#'
 geom_student <- function(
   mapping = NULL,
   data = NULL,
   position = "identity",
   width = 0.25,
   type = "density",
-  scale = "area",
+  scale = TRUE,
   draw_lines = NULL,
   draw_mean = TRUE,
-  na.rm = FALSE,
+  #na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
   ...
@@ -246,7 +258,7 @@ geom_student <- function(
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      na.rm = na.rm,
+      #na.rm = na.rm,
       type = type,
       scale = scale,
       width = width,
