@@ -183,12 +183,15 @@ GeomStudent <- ggplot2::ggproto(
   }
 )
 
-#' Student plot
+#' Student CI plot
 #'
-#' A Student plot is a mirrored density plot similar to violin plot
-#' but instead of kernel density estimate it is based on the $t$-density.
-#' It can be though of as a continuous "confidence interval density", which
-#' could reduce the dichotomous interpretations due to a fixed confidence level.
+#' A Student CI plot (or Violin CI plot) is a mirrored density plot similar to violin plot
+#' but instead of kernel density estimate it is based on the density of the t-distribution.
+#' It can be though of as a continuous "confidence interval density" (hence the name),
+#' which could reduce the dichotomous interpretations due to a fixed confidence level.
+#' \code{geom_student} can also be used to draw Gradient CI plots (using argument \code{type}),
+#' which replaces the violin shaped density with a rectangle.
+#'
 #' @import dplyr
 #' @inheritParams ggplot2::layer
 #' @param draw_lines If not \code{NULL} (default), draw horizontal lines
@@ -203,6 +206,7 @@ GeomStudent <- ggplot2::ggproto(
 #' @references Helske, J, S Helske, M Cooper, A Ynnerman, and L Besançon (2020).
 #' Are You Sure You’re Sure? - Effects of Visual Representation on the Cliff Effect in Statistical Inference.
 #' Under review. https://arxiv.org/abs/2002.07671
+#' @return A ggplot object.
 #' @export
 #' @examples
 #' library("dplyr")

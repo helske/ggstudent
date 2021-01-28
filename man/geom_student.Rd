@@ -2,7 +2,7 @@
 % Please edit documentation in R/statStudent.R
 \name{geom_student}
 \alias{geom_student}
-\title{Student plot}
+\title{Student CI plot}
 \usage{
 geom_student(mapping = NULL, data = NULL, position = "identity",
   width = 0.25, type = "density", scale = TRUE, draw_lines = NULL,
@@ -58,11 +58,16 @@ the default plot specification, e.g. \code{\link[=borders]{borders()}}.}
 
 \item{...}{Other arguments passed to \code{layer()}, such as fixed aesthetics.}
 }
+\value{
+A ggplot object.
+}
 \description{
-A Student plot is a mirrored density plot similar to violin plot
-but instead of kernel density estimate it is based on the $t$-density.
-It can be though of as a continuous "confidence interval density", which
-could reduce the dichotomous interpretations due to a fixed confidence level.
+A Student CI plot (or Violin CI plot) is a mirrored density plot similar to violin plot
+but instead of kernel density estimate it is based on the density of the t-distribution.
+It can be though of as a continuous "confidence interval density" (hence the name),
+which could reduce the dichotomous interpretations due to a fixed confidence level.
+\code{geom_student} can also be used to draw Gradient CI plots (using argument \code{type}),
+which replaces the violin shaped density with a rectangle.
 }
 \examples{
 library("dplyr")
