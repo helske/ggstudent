@@ -19,6 +19,7 @@ Description: Provides an extension to 'ggplot2' (Wickham, 2016, <doi:10.1007/978
     shape (horizontal width) is defined by the probability density function of the t-distribution.
 Encoding: UTF-8
 BugReports: https://github.com/helske/ggstudent/issues
+URL: https://github.com/helske/ggstudent
 Depends:
     R (>= 3.1.0)
 Imports:
